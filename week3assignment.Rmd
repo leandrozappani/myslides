@@ -1,0 +1,85 @@
+---
+title: "Infant Mortality Rate in Argentina (1990 - 2018)"
+author: "Leandro Zappani"
+date: "February 2, 2020"
+output:
+  ioslides_presentation: default
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE)
+library(plotly)
+library(tidyr)
+library(stringr)
+```
+
+## Introduction
+The data set was obtained from the web page of the Ministry of Health of Argentina and contain the infant mortality rate for the national total and each of the 24 jurisdictions (City of Buenos Aires and 23 provinces).  
+
+The infant mortality rate is the number of deaths per 1,000 live births of children under one year of age.  
+
+```{r}
+url <- "http://datos.salud.gob.ar/dataset/
+2eff770c-1c2b-4a22-9281-c3b5e9412086/
+resource/c1253897-d507-41f7-a3e1-6ed756e7243b/download/
+tasa-mortalidad-infantil.csv"
+
+if(!file.exists("tasa-mortalidad-infantil.csv")) {
+        download.file(url, "tasa-mortalidad-infantil.csv")
+}
+
+```
+
+## Data Preprocessing
+The data is in long format, so I transformed it with the `gather` function.  
+
+
+```{r}
+data <- read.csv("tasa-mortalidad-infantil.csv",
+                 stringsAsFactors = FALSE)
+data <- data %>% gather(key = "Region",
+                        value = "Infant_mortality", -1, 
+                        factor_key = FALSE)
+data <- data.frame("Year" = data$indice_tiempo, 
+                   "Region" = data$Region, 
+                   "Infant_mortality" = data$Infant_mortality,
+                   stringsAsFactors = FALSE)
+```
+
+***
+Then I formatted the year and region columns to a suitable format.  
+```{r}
+temp1 <- str_split(data$Region, pattern = "_")
+temp2 <- str_split(data$Year, pattern = "-")
+for (i in 1:length(data$Region)) {
+        data$Region[i] <- temp1[[i]][3]
+        data$Year[i] <- temp2[[i]][1]
+}
+data$Year <- as.numeric(data$Year)
+```
+
+## Time series plot  
+We can see the evolution of the Infant mortality Rate for the national total and each province and City of Buenos Aires from 1990 to 2018, using `plot_ly`.  
+
+
+```{r, eval = FALSE}
+plot_ly(data = data, x = data$Year, 
+        y = data$Infant_mortality, 
+        type = 'scatter', 
+        mode = 'lines',
+        color = as.factor(data$Region))
+```
+
+***
+
+```{r, echo = FALSE}
+plot_ly(data = data, x = data$Year, 
+        y = data$Infant_mortality, 
+        type = 'scatter', 
+        mode = 'lines',
+        color = as.factor(data$Region))
+```
+
+You can select specific jurisdictions to compare, and zoom in to focus on a specific year.  
+The overall trend is a decrease in the infant mortality rate over the years.
