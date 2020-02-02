@@ -13,7 +13,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 This simple app allows statistics students to grasp differences and similarities between some discrete and continuous statistical distributions, their parameters, and test the assumptions for the approximations between them.
 
-The app can be accessed using [this link](https://leandrozappani.shinyapps.io/comparing_statistical_distributions/)
+The app can be accessed using [this link](https://leandrozappani.shinyapps.io/comparing_statistical_distributions/).  
+The ui.R and server.R files are available at this [github repository](https://github.com/leandrozappani/developing_data_products_coursera).
 
 ## General View
 
