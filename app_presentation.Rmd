@@ -18,7 +18,7 @@ The ui.R and server.R files are available at this [github repository](https://gi
 
 ## General View
 
-As you can see, in the side panel there are a number of slides and boxes to tweak.
+As you can see, in the side panel there are a number of slides and boxes to tweak, and in the bottom part there are some instructions.
 
 ```{r , fig.height = 5, echo = FALSE}
 library(png)
@@ -26,25 +26,27 @@ library(grid)
 img1 <- readPNG("images/app1.png")
 grid.raster(img1)
 ```
-
+And in the bottom part there are some instructions.
 
 
 ***
-And in the bottom part there is some instructions.
+The app basically uses the base functions for probability density/mass functions `dnorm`, `dt`, `dpois` and `dbinom` with the custom parameters selected in the side bar. The computation is similar as what follows:
 
-```{r , fig.height = 5, echo = FALSE}
-img2 <- readPNG("images/app2.png")
-grid.raster(img2)
+```{r, echo = TRUE}
+x <- -5:5
+px <- dnorm(x, mean = 0, sd = 1)
+head(cbind(x,px))
 ```
+The second step is to plot these values as a line.
 
 ## Example of usage
 One approximation learned in introductory statistics is that with large n and probability of success close to 0.5, the binomial distribution can be approximated by a normal distribution.
 
-```{r , fig.height = 5, echo = FALSE}
+```{r , fig.height = 2, echo = FALSE}
 img3 <- readPNG("images/app3.png")
 grid.raster(img3)
 ```
 
-In this example, the parameters for the binomial are $p=0.5$ and $n=20$, so the mean is $\overline x =p n=10$ and standard deviation is $s= \sqrt{p(1-p) n }\approx 2.24$. When we tweak the normal parameters accordingly, the distritions match.
+In this example, the parameters for the binomial are $p=0.5$ and $n=20$, so the mean is $\overline x =p n=10$ and standard deviation is $s= \sqrt{p(1-p) n }\approx 2.24$. When we tweak the normal parameters accordingly, the distributions match.
 
 
